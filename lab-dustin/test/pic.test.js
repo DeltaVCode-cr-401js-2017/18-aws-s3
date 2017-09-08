@@ -46,7 +46,7 @@ describe.only('Pic Routes',function(){
         .expect(401);
     });
     it('should return 404 when given a bad id',function(){
-      return request.post(`/api/gallery/${this.testGallery.userID}/pic`)
+      return request.post(`/api/gallery/deadbeef/pic`)
         .set({ Authorization: `Bearer ${this.testToken}`})
         .field({
           name: example.pic.name,
@@ -55,14 +55,14 @@ describe.only('Pic Routes',function(){
         .attach('image',example.pic.image)
         .expect(404);
     });
-    it('should return 500 if not given a file',function(){
+    it('should return 400 if not given a file',function(){
       return request.post(`/api/gallery/${this.testGallery.userID}/pic`)
         .set({ Authorization: `Bearer ${this.testToken}`})
         .field({
           name: example.pic.name,
           desc: example.pic.desc
         })
-        .expect(500);
+        .expect(400);
     });
   });
 });

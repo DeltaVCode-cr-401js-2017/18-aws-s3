@@ -9,6 +9,12 @@ const bearerAuth = require('../lib/bearer-auth-middleware');
 
 const dataDir = `${__dirname}/../temp`;
 const upload = require('multer')({ dest: 'dataDir' });
+
+const fs = require('fs');
+const path = require('path');
+const del = require('del');
+const AWS = require('aws-sdk');
+
 const router = module.exports = new Router();
 
 router.post('/api/gallery/:id/pic',upload.single('image'),(req,res,next) => {
@@ -20,6 +26,8 @@ router.post('/api/gallery/:id/pic',upload.single('image'),(req,res,next) => {
   debug('file path', req.file.path);
   if (!req.file.path) return next(createError(500,'Not saved'));
 
+  req.file.ext = path.extname(req.file.originalname);
+  debug(req.file.ext);
   next();
 });
 
