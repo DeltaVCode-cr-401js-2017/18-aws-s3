@@ -36,6 +36,6 @@ router.post('/api/gallery',jsonParser,(req,res,next) => {
   }).save()
     .then(gallery => res.json(gallery))
     .catch(next);
-    console.log('req body AFTER: ',req.body);
+  console.log('req body AFTER: ',req.body);
 
 });

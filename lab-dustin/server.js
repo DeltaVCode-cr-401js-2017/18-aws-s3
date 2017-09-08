@@ -15,6 +15,7 @@ app.use(cors());
 
 app.use(require('./route/auth'));
 app.use('/api/gallery*',require('./lib/bearer-auth-middleware'));
+app.use(require('./route/pic'));
 app.use(require('./route/gallery'));
 app.use(require('./lib/error-middleware'));
 

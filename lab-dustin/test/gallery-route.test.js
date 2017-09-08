@@ -36,7 +36,7 @@ describe('Gallery Routes',function(){
     ]);
   });
 
-  describe.only('POST /api/gallery',function(){
+  describe('POST /api/gallery',function(){
     it('should return a gallery', function(){
       return request.post('/api/gallery')
         .set({ Authorization: `Bearer ${this.testToken}` })
