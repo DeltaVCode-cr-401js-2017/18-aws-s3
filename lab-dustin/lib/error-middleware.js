@@ -22,7 +22,7 @@ module.exports = function(err,req,res,next){
     err = createError(404,err.message);
   }
   else {
-    console.error('This is the Last stop for catching errors',err);
+    console.error('This is the Last stop for catching errors',err.name);
     err = createError(500, err.message);
   }
 

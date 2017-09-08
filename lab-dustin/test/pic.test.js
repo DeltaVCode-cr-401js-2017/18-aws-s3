@@ -18,7 +18,6 @@ describe.only('Pic Routes',function(){
     return User.createUser(example.user)
       .then(user => this.testUser = user)
       .then(user => user.generateToken())
-      .then(user => debug('testUser: ',user))
       .then(token => this.testToken = token);
   });
   //Create a gallery
@@ -26,7 +25,8 @@ describe.only('Pic Routes',function(){
     return Gallery.createGallery(example.gallery,this.testUser._id)
       .then(gallery => this.testGallery = gallery);
   });
-  //Delete User
+
+  //Clean up
   afterEach(function resetAll(){
     delete this.testUser;
     delete this.testGallery;
@@ -38,11 +38,31 @@ describe.only('Pic Routes',function(){
       Pic.remove({})
     ]);
   });
+
   describe('POST /api/gallery/:id/pic',function(){
-    it('should return 401 without authorization',function(){
+    it.skip('should return 401 without authorization',function(){
       return request.post(`/api/gallery/${this.testGallery.userID}/pic`)
         .send(example.pic)
         .expect(401);
+    });
+    it('should return 404 when given a bad id',function(){
+      return request.post(`/api/gallery/${this.testGallery.userID}/pic`)
+        .set({ Authorization: `Bearer ${this.testToken}`})
+        .field({
+          name: example.pic.name,
+          desc: example.pic.desc
+        })
+        .attach('image',example.pic.image)
+        .expect(404);
+    });
+    it('should return 500 if not given a file',function(){
+      return request.post(`/api/gallery/${this.testGallery.userID}/pic`)
+        .set({ Authorization: `Bearer ${this.testToken}`})
+        .field({
+          name: example.pic.name,
+          desc: example.pic.desc
+        })
+        .expect(500);
     });
   });
 });

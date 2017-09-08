@@ -16,7 +16,10 @@ module.exports = function(req,res,next){
   if (!token) return next(createError(401,'Auth Token required'));
 
   jwt.verify(token,process.env.APP_SECRET,(err,decoded) => {
-    if (err) return next(err);
+    debug(token);
+    if (err){
+      debug('error verifying', err.message);
+      return next(err);}
     debug('decoded: ', decoded);
 
     User.findOne({ findHash: decoded.token })
